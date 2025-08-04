@@ -132,6 +132,7 @@ def input_rank_id():
     taxonomy.close()
     return rank_id
 
+def input_supertaxon_id():
 
 def add_taxonomy():
     taxonomy = sqlite3.connect('taxonomy.db')
@@ -141,9 +142,9 @@ def add_taxonomy():
         new_name_latin = input("Latin name")
         new_name_english = input("English name")
         new_description = input("Description")
-        new_super_taxon_id = input("Super Taxon ID")
+        new_supertaxon_id = input("Supertaxon ID")
         break
-    new_taxon = (new_rank_id, new_name_latin, new_name_english, new_description, new_super_taxon_id)
+    new_taxon = (new_rank_id, new_name_latin, new_name_english, new_description, new_supertaxon_id)
     cursor.execute('''
     INSERT INTO taxonomic_rank (rank_id, name_latin, name_english, description, super_taxon_id) VALUES (?, ?, ?, ?, ?)
     ''', new_taxon)
