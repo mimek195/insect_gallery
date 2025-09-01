@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="300a37ba-6d02-49ad-ab30-a6c61eb97342" name="Changes" comment="database, add_taxonomy, and more">
+    <list default="true" id="300a37ba-6d02-49ad-ab30-a6c61eb97342" name="Changes" comment="some stuff idk">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/database.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/taxonomy.db" beforeDir="false" afterPath="$PROJECT_DIR$/taxonomy.db" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,7 +38,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Python.database.executor": "Run",
-    "Python.main.executor": "Run",
+    "Python.main.executor": "Debug",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "settings.editor.selected.configurable": "preferences.updates"
@@ -142,7 +143,15 @@
       <option name="project" value="LOCAL" />
       <updated>1754320958079</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="some stuff idk">
+      <option name="closed" value="true" />
+      <created>1754331466050</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1754331466050</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -159,6 +168,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="testing git commit" />
     <MESSAGE value="database, add_taxonomy, and more" />
-    <option name="LAST_COMMIT_MESSAGE" value="database, add_taxonomy, and more" />
+    <MESSAGE value="some stuff idk" />
+    <option name="LAST_COMMIT_MESSAGE" value="some stuff idk" />
   </component>
 </project>
