@@ -1,6 +1,7 @@
 import sqlite3
 import os
 
+
 def create_taxonomic_database():
     taxonomy = sqlite3.connect('taxonomy.db')
     cursor = taxonomy.cursor()
