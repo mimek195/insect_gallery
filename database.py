@@ -115,6 +115,7 @@ def input_rank_id():    # Displays all taxonomic ranks
         for row in rows:
             rank_id_list.append(row[0])
             print(f"{row[0]:<10} {row[1]:<20}")
+        print("------")
         try:
             rank_id = int(input("Rank ID: "))
             if any(rank == rank_id for rank in rank_id_list):
@@ -130,6 +131,7 @@ def input_rank_id():    # Displays all taxonomic ranks
 
     taxonomy.close()
     return rank_id
+
 
 def input_supertaxon_id():
     taxonomy = sqlite3.connect('taxonomy.db')
@@ -147,6 +149,7 @@ def input_supertaxon_id():
         for row in rows:
             supertaxon_id_list.append(row[0])
             print(f"{row[0]:<20} {row[1]:<30} {row[2]:<20}")
+        print("------")
         try:
             supertaxon_id = int(input("Supertaxon ID: "))
             if any(supertaxon == supertaxon_id for supertaxon in supertaxon_id_list):
@@ -163,16 +166,28 @@ def input_supertaxon_id():
     taxonomy.close()
     return supertaxon_id
 
+
+def input_latin_name():
+    return input("Latin name ")
+
+
+def input_english_name():
+    return input("English name ")
+
+
+def input_description():
+    return input("Description ")
+
+
 def add_taxonomy():
     taxonomy = sqlite3.connect('taxonomy.db')
     cursor = taxonomy.cursor()
     while True:
         new_rank_id = input_rank_id()
         new_supertaxon_id = input_supertaxon_id()
-
-        new_name_latin = input("Latin name ")
-        new_name_english = input("English name ")
-        new_description = input("Description ")
+        new_name_latin = input_latin_name()
+        new_name_english = input_english_name()
+        new_description = input_description()
         break
     new_taxon = (new_rank_id, new_name_latin, new_name_english, new_description, new_supertaxon_id)
     cursor.execute('''
