@@ -1,6 +1,6 @@
 import sys
 from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel
-from PyQt6.QtGui import QIcon
+from PyQt6.QtGui import QIcon, QFont
 
 
 class MainWindow(QMainWindow):
@@ -11,7 +11,11 @@ class MainWindow(QMainWindow):
         self.center()
         self.setWindowIcon(QIcon("icon.png"))
 
-
+        label = QLabel("Insect Gallery", self)
+        label.setFont(QFont("Comic Sans MS", 40))
+        label.setGeometry(0, 0, 500, 100)
+        label.setStyleSheet("color: pink;"
+                            "background-color: black;")
 
     def center(self):
         screen = QApplication.primaryScreen().availableGeometry()   # get screen geometry
