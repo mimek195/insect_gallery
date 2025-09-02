@@ -6,7 +6,7 @@ def create_taxonomic_database():
     taxonomy = sqlite3.connect('taxonomy.db')
     cursor = taxonomy.cursor()
     cursor.execute("PRAGMA foreign_keys = ON;")
-
+    cursor.execute("DROP TABLE IF EXISTS ranks;")
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS ranks (
         id INTEGER NOT NULL,

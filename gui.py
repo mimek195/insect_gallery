@@ -1,7 +1,7 @@
 import sys
 from PyQt6.QtWidgets import (QApplication, QMainWindow, QLabel,
                              QWidget, QVBoxLayout, QHBoxLayout, QGridLayout,
-                             QPushButton)
+                             QPushButton, QCheckBox)
 from PyQt6.QtGui import QIcon, QFont, QPixmap
 from PyQt6.QtCore import Qt
 

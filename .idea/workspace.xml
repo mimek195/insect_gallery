@@ -4,9 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="300a37ba-6d02-49ad-ab30-a6c61eb97342" name="Changes" comment="grid layout test">
+    <list default="true" id="300a37ba-6d02-49ad-ab30-a6c61eb97342" name="Changes" comment="bush buttons test">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/database.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/taxonomy.db" beforeDir="false" afterPath="$PROJECT_DIR$/taxonomy.db" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,7 +52,7 @@
       <recent name="F:\Folder\Documents\PythonProjects\insect_gallery" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.gui">
+  <component name="RunManager" selected="Python.main">
     <configuration name="database" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="insect_gallery" />
       <option name="ENV_FILES" value="" />
@@ -219,7 +222,15 @@
       <option name="project" value="LOCAL" />
       <updated>1756845259198</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="bush buttons test">
+      <option name="closed" value="true" />
+      <created>1756846727658</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1756846727658</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -242,6 +253,7 @@
     <MESSAGE value="learning PyQt6, adding first window, adding icon" />
     <MESSAGE value="1" />
     <MESSAGE value="grid layout test" />
-    <option name="LAST_COMMIT_MESSAGE" value="grid layout test" />
+    <MESSAGE value="bush buttons test" />
+    <option name="LAST_COMMIT_MESSAGE" value="bush buttons test" />
   </component>
 </project>
