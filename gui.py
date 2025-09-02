@@ -4,6 +4,7 @@ from PyQt6.QtWidgets import (QApplication, QMainWindow, QLabel,
                              QPushButton, QCheckBox)
 from PyQt6.QtGui import QIcon, QFont, QPixmap
 from PyQt6.QtCore import Qt
+import tree_render as tr
 
 
 class MainWindow(QMainWindow):
@@ -17,7 +18,7 @@ class MainWindow(QMainWindow):
         self.setWindowIcon(QIcon("icon.png"))
 
         # Elements
-        self.button = QPushButton("Squash Bug", self)
+        self.button = QPushButton("Render Tree", self)
         self.title = QLabel("Insect Gallery", self)
         self.image = QLabel(self)
 
@@ -72,9 +73,9 @@ class MainWindow(QMainWindow):
         self.button.clicked.connect(self.on_click)
 
     def on_click(self):
-        self.button.setText("Squashed!")
+        self.button.setText("Tree Rendered")
         self.button.setDisabled(True)
-        self.title.setText("Gallery")
+        tr.render_tree()
 
     def center(self):
         screen = QApplication.primaryScreen().availableGeometry()   # get screen geometry

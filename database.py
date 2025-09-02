@@ -6,6 +6,8 @@ def create_taxonomic_database():
     taxonomy = sqlite3.connect('taxonomy.db')
     cursor = taxonomy.cursor()
     cursor.execute("PRAGMA foreign_keys = ON;")
+
+    # Create ranks table
     cursor.execute("DROP TABLE IF EXISTS ranks;")
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS ranks (
@@ -33,6 +35,7 @@ def create_taxonomic_database():
         INSERT INTO ranks (id, name, super_rank_id) VALUES (?, ?, ?)
         ''', ranks)
 
+    # Create taxons table
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS taxons (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -40,11 +43,12 @@ def create_taxonomic_database():
         name_latin TEXT NOT NULL,
         name_english TEXT,
         description TEXT,
-        super_taxon_id INTEGER NOT NULL,
+        super_taxon_id INTEGER,
         FOREIGN KEY(rank_id) REFERENCES ranks(id) ON DELETE CASCADE
     )
     ''')
 
+    # Create photos table
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS photos (
         photo_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -65,13 +69,14 @@ def load_default():
     cursor = taxonomy.cursor()
 
     taxas = [
-        (12, "Arthropoda", "Arthropod", "Insects, crustaceans and such", 0),
+        (12, "Arthropoda", "Arthropod", "Insects, crustaceans and such", None),
         (11, "Insecta", "Insects", "Hexapod invertebrates", 1),
         (8, "Hempitera", "True Bugs", "Bug", 2),
         (6, "Heteroptera", "Typical Bugs", "Different wings!", 3),
         (5, "Pyrrhocoridae", "Red Bugs", "They are red", 4),
         (2, "Pyrrhocoris", "Cotton Stainers", "Yup, red", 5),
-        (1, "Pyrrhocoris apterus", "Firebug", "Red!", 6)
+        (1, "Pyrrhocoris apterus", "Firebug", "Red!", 6),
+        (11, "Crustacea", "Crustaceans", "Crab", 1)
     ]
 
     cursor.executemany('''
