@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="300a37ba-6d02-49ad-ab30-a6c61eb97342" name="Changes" comment="1">
+    <list default="true" id="300a37ba-6d02-49ad-ab30-a6c61eb97342" name="Changes" comment="grid layout test">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui.py" afterDir="false" />
     </list>
@@ -211,7 +211,15 @@
       <option name="project" value="LOCAL" />
       <updated>1756736866408</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="grid layout test">
+      <option name="closed" value="true" />
+      <created>1756845259198</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1756845259198</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -233,6 +241,7 @@
     <MESSAGE value="add_taxonomy edits" />
     <MESSAGE value="learning PyQt6, adding first window, adding icon" />
     <MESSAGE value="1" />
-    <option name="LAST_COMMIT_MESSAGE" value="1" />
+    <MESSAGE value="grid layout test" />
+    <option name="LAST_COMMIT_MESSAGE" value="grid layout test" />
   </component>
 </project>

@@ -1,5 +1,7 @@
 import sys
-from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QWidget, QVBoxLayout, QHBoxLayout, QGridLayout
+from PyQt6.QtWidgets import (QApplication, QMainWindow, QLabel,
+                             QWidget, QVBoxLayout, QHBoxLayout, QGridLayout,
+                             QPushButton)
 from PyQt6.QtGui import QIcon, QFont, QPixmap
 from PyQt6.QtCore import Qt
 
@@ -14,31 +16,16 @@ class MainWindow(QMainWindow):
         self.center()
         self.setWindowIcon(QIcon("icon.png"))
 
+        # Elements
+        self.button = QPushButton("Squash Bug", self)
+        self.title = QLabel("Insect Gallery", self)
+        self.image = QLabel(self)
+
         # Layout
         self.initUI()
 
-        # Display Title
-        title = QLabel("Insect Gallery", self)
-        title.setFont(QFont("Comic Sans MS", 40))
-        title.setGeometry(0, 0, 1000, 100)
-        title.setStyleSheet("color: pink;")
-                            #"background-color: black;")
-        title.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-        # Display Image
-        image = QLabel(self)
-        image.setGeometry(200, 200, 150, 150)
-
-        pixmap = QPixmap("icon.png")
-        image.setPixmap(pixmap)
-
-        image.setScaledContents(True)
-        image.setGeometry((self.width() - image.width()) // 2,
-                          (self.height() - image.height() + title.height()) // 2,
-                          image.width(),
-                          image.height())
-
     def initUI(self):
+        '''
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
 
@@ -56,7 +43,38 @@ class MainWindow(QMainWindow):
         grid_layout_manager.addWidget(label_5, 3, 1)
 
         central_widget.setLayout(grid_layout_manager)
+        '''
 
+        # Display Title
+        self.title.setFont(QFont("Times New Roman", 40))
+        self.title.setGeometry(0, 0, 1000, 100)
+        self.title.setStyleSheet("color: black;")
+        self.title.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        # Display Image
+        pixmap = QPixmap("icon.png")
+        self.image.setPixmap(pixmap)
+
+        self.image.setGeometry(0, 0, 150, 150)
+        self.image.setScaledContents(True)
+        self.image.setGeometry((self.width() - self.image.width()) // 2,
+                          (self.height() - self.image.height()) // 2,
+                          self.image.width(),
+                          self.image.height())
+
+        # Display Button
+        self.button.setGeometry(100, 100, 150, 50)
+        self.button.setGeometry((self.width() - self.button.width()) // 2,
+                           (self.height() - self.button.height()) // 2 + self.image.height(),
+                           self.button.width(),
+                           self.button.height())
+        self.button.setFont(QFont("Times New Roman", 11))
+        self.button.clicked.connect(self.on_click)
+
+    def on_click(self):
+        self.button.setText("Squashed!")
+        self.button.setDisabled(True)
+        self.title.setText("Gallery")
 
     def center(self):
         screen = QApplication.primaryScreen().availableGeometry()   # get screen geometry
