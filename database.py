@@ -52,11 +52,10 @@ def create_taxonomic_database():
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS photos (
         photo_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        species_id INTEGER NOT NULL,
-        photo_location TEXT NOT NULL,
+        supertaxon_id INTEGER NOT NULL,
+        photo_location TEXT,
         photo_description TEXT,
-        description TEXT,
-        FOREIGN KEY(species_id) REFERENCES taxons(id) ON DELETE CASCADE
+        FOREIGN KEY(supertaxon_id) REFERENCES taxons(id) ON DELETE CASCADE
     )
     ''')
 
@@ -173,28 +172,27 @@ def input_supertaxon_id():
     return supertaxon_id
 
 
-def input_latin_name():
-    return input("Latin name ")
-
-
-def input_english_name():
-    return input("English name ")
-
-
-def input_description():
-    return input("Description ")
+def input_string(query, limit=50):
+    while True:
+        try:
+            input_result = input(query)
+            if len(input_result) <= limit:
+                return input_result
+            else:
+                print(f"String must have less than {limit} symbols")
+        except:
+            print("unknown error")
 
 
 def add_taxonomy():
     taxonomy = sqlite3.connect('taxonomy.db')
     cursor = taxonomy.cursor()
-    while True:
-        new_rank_id = input_rank_id()
-        new_supertaxon_id = input_supertaxon_id()
-        new_name_latin = input_latin_name()
-        new_name_english = input_english_name()
-        new_description = input_description()
-        break
+    new_rank_id = input_rank_id()
+    new_supertaxon_id = input_supertaxon_id()
+    new_name_latin = input_string("Input latin name: ", 50)
+    new_name_english = input_string("Input common name: ", 50)
+    new_description = input_string("Input description: ", 1000)
+
     new_taxon = (new_rank_id, new_name_latin, new_name_english, new_description, new_supertaxon_id)
     cursor.execute('''
     INSERT INTO taxons (rank_id, name_latin, name_english, description, super_taxon_id) VALUES (?, ?, ?, ?, ?)
