@@ -1,12 +1,7 @@
 import database as db
 import gui
-db.nuke_database()
+#db.add_taxonomy('taxonomy.db')
 
-db.create_taxonomic_database()
-db.load_default()
-
-db.add_taxonomy()
-
-db.view_taxonomy()
-
+#db.view_taxonomy('taxonomy.db')
+print(db.check_if_database_exists("taxonomy"))
 gui.main()

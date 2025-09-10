@@ -3,8 +3,8 @@ from ete3.treeview import TreeStyle
 import sqlite3
 
 
-def render_tree():
-    taxonomy = sqlite3.connect('taxonomy.db')
+def render_tree(database_name):
+    taxonomy = sqlite3.connect(database_name)
     cursor = taxonomy.cursor()
 
     # Fetch Database

@@ -2,8 +2,17 @@ import sqlite3
 import os
 
 
-def create_taxonomic_database():
-    taxonomy = sqlite3.connect('taxonomy.db')
+def check_if_database_exists(database_name):
+    base_dir = os.path.dirname(__file__)
+    file_path = os.path.join(base_dir, database_name)
+    if os.path.isfile(file_path):
+        return True
+    else:
+        return False
+
+
+def create_taxonomic_database(database_name):
+    taxonomy = sqlite3.connect(database_name)
     cursor = taxonomy.cursor()
     cursor.execute("PRAGMA foreign_keys = ON;")
 
@@ -63,8 +72,13 @@ def create_taxonomic_database():
     taxonomy.close()
 
 
-def load_default():
-    taxonomy = sqlite3.connect('taxonomy.db')
+def load_database(database_name):
+    database = sqlite3.connect(database_name)
+    cursor = database.cursor()
+
+
+def load_default(database_name):
+    taxonomy = sqlite3.connect(database_name)
     cursor = taxonomy.cursor()
 
     taxas = [
@@ -86,8 +100,8 @@ def load_default():
     taxonomy.close()
 
 
-def view_taxonomy():
-    taxonomy = sqlite3.connect('taxonomy.db')
+def view_taxonomy(database_name):
+    taxonomy = sqlite3.connect(database_name)
     cursor = taxonomy.cursor()
 
     cursor.execute('''
@@ -104,8 +118,8 @@ def view_taxonomy():
     taxonomy.close()
 
 
-def input_rank_id():    # Displays all taxonomic ranks
-    taxonomy = sqlite3.connect('taxonomy.db')
+def input_rank_id(database_name):
+    taxonomy = sqlite3.connect(database_name)
     cursor = taxonomy.cursor()
 
     cursor.execute('''
@@ -138,8 +152,8 @@ def input_rank_id():    # Displays all taxonomic ranks
     return rank_id
 
 
-def input_supertaxon_id():
-    taxonomy = sqlite3.connect('taxonomy.db')
+def input_supertaxon_id(database_name):
+    taxonomy = sqlite3.connect(database_name)
     cursor = taxonomy.cursor()
 
     cursor.execute('''
@@ -184,8 +198,8 @@ def input_string(query, limit=50):
             print("unknown error")
 
 
-def add_taxonomy():
-    taxonomy = sqlite3.connect('taxonomy.db')
+def add_taxonomy(database_name):
+    taxonomy = sqlite3.connect(database_name)
     cursor = taxonomy.cursor()
     new_rank_id = input_rank_id()
     new_supertaxon_id = input_supertaxon_id()
@@ -201,5 +215,5 @@ def add_taxonomy():
     taxonomy.close()
 
 
-def nuke_database():
-    os.remove('taxonomy.db')
+def nuke_database(database_name):
+    os.remove(database_name)
