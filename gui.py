@@ -18,89 +18,93 @@ class MainWindow(QMainWindow):
         # Set Window Size
         self.setWindowTitle("Insect Gallery")
         self.resize(1000, 600)
-        self.center()
         self.setWindowIcon(QIcon("icon.png"))
 
         self.database_name = None
 
+        # Pages
         self.page1 = QWidget()
-        self.main_menu_layout = QVBoxLayout()
-
         self.page2 = QWidget()
-        self.load_database_layout = QVBoxLayout()
 
         self.main_menu()
 
     def main_menu(self):
-        # Main Menu Elements
-        self.main_menu_layout.line_edit = QLineEdit(self)
-        self.main_menu_layout.line_button = QPushButton("Display Database", self)
-        self.main_menu_layout.title = QLabel("Insect Gallery", self)
-        self.main_menu_layout.image = QLabel(self)
 
-        self.main_menu_layout.error_message = QLabel("Database not found", self)
+        main_menu_layout = QVBoxLayout()
+        main_menu_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         # Display Title
-        self.main_menu_layout.title.setFont(QFont("Arial", 40))
-        self.main_menu_layout.title.setGeometry(0, 0, 1000, 100)
-        self.main_menu_layout.title.setStyleSheet("color: black;")
-        self.main_menu_layout.title.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.main_menu_layout.title.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        main_menu_title = QLabel("Insect Gallery")
+        main_menu_title.setFont(QFont("Arial", 40))
+        main_menu_title.setStyleSheet("color: black;")
+        main_menu_title.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         # Display Image
         pixmap = QPixmap("icon.png")
-        self.main_menu_layout.image.setPixmap(pixmap)
-        self.main_menu_layout.image.setGeometry(0, 0, 150, 150)
-        self.main_menu_layout.image.setScaledContents(True)
-        self.main_menu_layout.image.setGeometry(
-            (self.width() - self.main_menu_layout.image.width()) // 2,
-            (self.height() - self.main_menu_layout.image.height()) // 2,
-            self.main_menu_layout.image.width(), self.main_menu_layout.image.height())
+        main_menu_icon = QLabel()
+        main_menu_icon.setPixmap(pixmap)
+        main_menu_icon.setScaledContents(True)
+        main_menu_icon.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        main_menu_icon.setMaximumSize(200, 200)
 
         # Display Line Edit
-        self.main_menu_layout.line_edit.setGeometry(0, 0, 150, 40)
-        self.main_menu_layout.line_edit.setGeometry(
-            (self.width() - self.main_menu_layout.line_edit.width()) // 2,
-            (self.height() - self.main_menu_layout.line_edit.height()) // 2 + self.main_menu_layout.image.height(),
-            self.main_menu_layout.line_edit.width(), self.main_menu_layout.line_edit.height())
-        self.main_menu_layout.line_edit.setFont(QFont("Arial", 11))
-        self.main_menu_layout.line_edit.setPlaceholderText("Enter database name")
-        self.main_menu_layout.line_edit.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        self.line_edit = QLineEdit()
+        self.line_edit.setFont(QFont("Arial", 11))
+        self.line_edit.setPlaceholderText("Enter database name")
+        self.line_edit.setFixedWidth(250)
+        self.line_edit.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
 
-        # Display Line Button
-        self.main_menu_layout.line_button.setGeometry(0, 0, 100, 40)
-        self.main_menu_layout.line_button.setGeometry(
-            (self.width() - self.main_menu_layout.line_button.width()) // 2,
-            (self.height() - self.main_menu_layout.line_button.height()) // 2 + self.main_menu_layout.image.height() + self.main_menu_layout.line_edit.height(),
-            self.main_menu_layout.line_button.width(), self.main_menu_layout.line_button.height())
-        self.main_menu_layout.line_edit.returnPressed.connect(self.view_database)
-        self.main_menu_layout.line_button.clicked.connect(self.view_database)
+        # Display Line Edit Button
+        line_edit_button = QPushButton("Load Database")
+        line_edit_button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+        line_edit_button.setFixedWidth(250)
 
-        # Display Error Message
-        self.main_menu_layout.error_message.setVisible(False)
-        self.main_menu_layout.error_message.setGeometry(0, 0, 150, 50)
-        self.main_menu_layout.error_message.setGeometry(
-            (self.width() - self.main_menu_layout.error_message.width()) // 2,
-            (self.height() - self.main_menu_layout.line_edit.height()) // 2 + self.main_menu_layout.image.height() - 35,
-            self.main_menu_layout.error_message.width(), self.main_menu_layout.error_message.height())
-        self.main_menu_layout.error_message.setStyleSheet("color: red;")
-        self.main_menu_layout.error_message.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        # Error Message
+        self.error_message = QLabel("Database not found")
+        self.error_message.setStyleSheet("color: red;")
+        self.error_message.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.error_message.setVisible(False)
 
-        self.page1.setLayout(self.main_menu_layout)
+        # Container for Error Message
+        error_container = QWidget()
+        error_container.setFixedHeight(20)
+        error_layout = QVBoxLayout()
+        error_layout.setContentsMargins(0, 0, 0, 0)
+        error_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        error_layout.addWidget(self.error_message)
+        error_container.setLayout(error_layout)
+
+        # Connect
+        self.line_edit.returnPressed.connect(self.view_database)
+        line_edit_button.clicked.connect(self.view_database)
+
+        # Add widgets
+        main_menu_layout.addSpacing(-200)
+        main_menu_layout.addWidget(main_menu_title, alignment=Qt.AlignmentFlag.AlignCenter)
+        main_menu_layout.addSpacing(20)
+        main_menu_layout.addWidget(main_menu_icon, alignment=Qt.AlignmentFlag.AlignCenter)
+        main_menu_layout.addSpacing(20)
+        main_menu_layout.addWidget(self.line_edit, alignment=Qt.AlignmentFlag.AlignCenter)
+        main_menu_layout.addWidget(line_edit_button, alignment=Qt.AlignmentFlag.AlignCenter)
+        main_menu_layout.addSpacing(2)
+        main_menu_layout.addWidget(error_container, alignment=Qt.AlignmentFlag.AlignCenter)
+
+        self.page1.setLayout(main_menu_layout)
+        self.stacked_widget.addWidget(self.page1)
 
     def load_database(self):
         return "test"
 
     def view_database(self):
         try:
-            self.database_name = self.main_menu_layout.line_edit.text() + '.db'
-            self.main_menu_layout.line_edit.clear()
+            self.database_name = self.line_edit.text() + '.db'
+            self.line_edit.clear()
             if db.check_if_database_exists(self.database_name):
-                if self.main_menu_layout.error_message.isVisible():
-                    self.main_menu_layout.error_message.setVisible(False)
+                if self.error_message.isVisible():
+                    self.error_message.setVisible(False)
                 tr.render_tree(self.database_name)
             else:
-                self.main_menu_layout.error_message.setVisible(True)
+                self.error_message.setVisible(True)
         except:
             print("error")
 
