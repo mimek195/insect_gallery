@@ -1,12 +1,12 @@
 import sys
+import os
 from PyQt6.QtWidgets import (QApplication, QMainWindow, QLabel, QLineEdit,
                              QWidget, QVBoxLayout, QHBoxLayout, QGridLayout,
                              QPushButton, QCheckBox, QStackedWidget, QSizePolicy)
 from PyQt6.QtGui import QIcon, QFont, QPixmap
 from PyQt6.QtCore import Qt
 import database as db
-import tree_render as tr
-
+import phylogenetic_tree_gen as tree
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -21,12 +21,17 @@ class MainWindow(QMainWindow):
         self.setWindowIcon(QIcon("icon.png"))
 
         self.database_name = None
+        self.base_dir = os.path.dirname(os.path.abspath(__file__))
 
         # Pages
+        self.page0 = QWidget()
         self.page1 = QWidget()
-        self.page2 = QWidget()
 
         self.main_menu()
+
+        # Pages
+        self.stacked_widget.addWidget(self.page0)
+        self.stacked_widget.addWidget(self.page1)
 
     def main_menu(self):
 
@@ -89,26 +94,37 @@ class MainWindow(QMainWindow):
         main_menu_layout.addSpacing(2)
         main_menu_layout.addWidget(error_container, alignment=Qt.AlignmentFlag.AlignCenter)
 
-        self.page1.setLayout(main_menu_layout)
-        self.stacked_widget.addWidget(self.page1)
+        self.page0.setLayout(main_menu_layout)
+        self.scan_for_databases()
 
     def load_database(self):
-        return "test"
+        load_database_layout = QVBoxLayout()
+        load_database_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        list_of_databases = self.scan_for_databases()
+
+
+        self.page1.setLayout(load_database_layout)
 
     def view_database(self):
         try:
-            self.database_name = self.line_edit.text() + '.db'
+            self.database_path = os.path.join(self.base_dir, 'databases', self.line_edit.text() + '.db')
             self.line_edit.clear()
-            if db.check_if_database_exists(self.database_name):
+            if db.check_if_database_exists(self.database_path):
                 if self.error_message.isVisible():
                     self.error_message.setVisible(False)
-                tr.render_tree(self.database_name)
+                self.tree_window = tree.generate_phylogenetic_tree(self.database_path)
+                self.tree_window.show()
             else:
                 self.error_message.setVisible(True)
         except:
             print("error")
 
-
+    def scan_for_databases(self):
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        databases_dir = os.path.join(base_dir, 'databases')
+        databases = [f for f in os.listdir(databases_dir) if f.endswith('.db')]
+        return databases
 
     def new_database(self):
         return "test"

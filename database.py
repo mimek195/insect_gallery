@@ -12,7 +12,9 @@ def check_if_database_exists(database_name):
 
 
 def create_taxonomic_database(database_name):
-    taxonomy = sqlite3.connect(database_name)
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    database_path = os.path.join(base_dir, 'databases', database_name + '.db')
+    taxonomy = sqlite3.connect(database_path)
     cursor = taxonomy.cursor()
     cursor.execute("PRAGMA foreign_keys = ON;")
 
@@ -78,7 +80,9 @@ def load_database(database_name):
 
 
 def load_default(database_name):
-    taxonomy = sqlite3.connect(database_name)
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    database_path = os.path.join(base_dir, 'databases', database_name + '.db')
+    taxonomy = sqlite3.connect(database_path)
     cursor = taxonomy.cursor()
 
     taxas = [
@@ -216,4 +220,6 @@ def add_taxonomy(database_name):
 
 
 def nuke_database(database_name):
-    os.remove(database_name)
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    database_path = os.path.join(base_dir, 'databases', database_name + '.db')
+    os.remove(database_path)
