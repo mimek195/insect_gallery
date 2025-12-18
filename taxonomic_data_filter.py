@@ -1,7 +1,5 @@
 import re
 
-from pycparser.ply.ygen import filter_section
-
 input_file = "arthropoda_ids.txt"
 output_file = "taxonomy.txt"
 
