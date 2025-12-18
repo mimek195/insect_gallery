@@ -1,5 +1,6 @@
 import re
 
+
 input_file = "arthropoda_ids.txt"
 output_file = "taxonomy.txt"
 
