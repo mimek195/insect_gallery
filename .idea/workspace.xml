@@ -4,20 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="300a37ba-6d02-49ad-ab30-a6c61eb97342" name="Changes" comment="centered layout, stretchy">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/phylogenetic_tree_gen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/insect_gallery.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/insect_gallery.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="300a37ba-6d02-49ad-ab30-a6c61eb97342" name="Changes" comment="can now generate the tree. ugly. needs fixing and code cleanup i guess">
+      <change afterPath="$PROJECT_DIR$/taxonomic_data_filter.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/database.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/taxonomy.db" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tree_render.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/databases/taxonomy.db" beforeDir="false" afterPath="$PROJECT_DIR$/databases/taxonomy.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/phylogenetic_tree_gen.py" beforeDir="false" afterPath="$PROJECT_DIR$/phylogenetic_tree_gen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,6 +25,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;mimek195&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/mimek195/insect_gallery.git&quot;,
+    &quot;accountId&quot;: &quot;7815c800-40b3-4f5e-ace1-1d1434574e80&quot;
+  }
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
 }</component>
@@ -51,6 +54,8 @@
     "Python.gui.executor": "Run",
     "Python.main.executor": "Run",
     "Python.phylogenetic_tree_gen.executor": "Run",
+    "Python.taxonomic_data_filter.executor": "Debug",
+    "Python.test.executor": "Run",
     "Python.tree_render.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -79,7 +84,7 @@
       <recent name="F:\Folder\Documents\PythonProjects\insect_gallery" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.taxonomic_data_filter">
     <configuration name="database" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="insect_gallery" />
       <option name="ENV_FILES" value="" />
@@ -172,6 +177,28 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="taxonomic_data_filter" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="insect_gallery" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/taxonomic_data_filter.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="tree_render" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="insect_gallery" />
       <option name="ENV_FILES" value="" />
@@ -197,6 +224,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.taxonomic_data_filter" />
         <item itemvalue="Python.phylogenetic_tree_gen" />
         <item itemvalue="Python.gui" />
         <item itemvalue="Python.tree_render" />
@@ -207,7 +235,6 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-3aa1da707db6-JavaScript-PY-252.26830.99" />
         <option value="bundled-python-sdk-164cda30dcd9-0af03a5fa574-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-252.26830.99" />
       </set>
     </attachedChunks>
@@ -223,7 +250,10 @@
       <workItem from="1760215672559" duration="1770000" />
       <workItem from="1761593766956" duration="133000" />
       <workItem from="1761593928527" duration="697000" />
-      <workItem from="1761646739135" duration="6470000" />
+      <workItem from="1761646739135" duration="7951000" />
+      <workItem from="1761657467696" duration="407000" />
+      <workItem from="1761675793007" duration="118000" />
+      <workItem from="1762889226211" duration="5000" />
     </task>
     <task id="LOCAL-00001" summary="testing git commit">
       <option name="closed" value="true" />
@@ -361,7 +391,15 @@
       <option name="project" value="LOCAL" />
       <updated>1758277303210</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="can now generate the tree. ugly. needs fixing and code cleanup i guess">
+      <option name="closed" value="true" />
+      <created>1761655966891</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1761655966891</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -394,11 +432,12 @@
     <MESSAGE value="line_edit added" />
     <MESSAGE value="backup" />
     <MESSAGE value="centered layout, stretchy" />
-    <option name="LAST_COMMIT_MESSAGE" value="centered layout, stretchy" />
+    <MESSAGE value="can now generate the tree. ugly. needs fixing and code cleanup i guess" />
+    <option name="LAST_COMMIT_MESSAGE" value="can now generate the tree. ugly. needs fixing and code cleanup i guess" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/insect_gallery$phylogenetic_tree_gen.coverage" NAME="phylogenetic_tree_gen Coverage Results" MODIFIED="1761649230669" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/insect_gallery$gui.coverage" NAME="gui Coverage Results" MODIFIED="1761648754276" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/insect_gallery$main.coverage" NAME="main Coverage Results" MODIFIED="1761655767261" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/insect_gallery$main.coverage" NAME="main Coverage Results" MODIFIED="1761657647262" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

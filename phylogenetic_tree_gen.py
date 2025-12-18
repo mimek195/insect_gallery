@@ -1,4 +1,6 @@
 import sqlite3
+
+from PyQt6.QtGui import QFontMetrics, QFont
 from PyQt6.QtWidgets import (
     QMainWindow, QGraphicsView, QGraphicsScene,
     QGraphicsTextItem, QGraphicsRectItem, QGraphicsLineItem
@@ -62,31 +64,39 @@ class PhylogeneticTree(QMainWindow):
             x = x_start + (i + 1) * step
             y = depth * self.level_height
 
-            # Box
-            node_box = QGraphicsRectItem(x, y, self.box_width, self.box_height)
-            node_box.setBrush(Qt.GlobalColor.lightGray)
-            node_box.setPen(Qt.GlobalColor.black)
-            self.scene.addItem(node_box)
 
             # Text
             label = f"{node['rank']}: {node['name']}"
             text_item = QGraphicsTextItem(label)
             text_item.setDefaultTextColor(Qt.GlobalColor.black)
-            text_item.setTextWidth(self.box_width)
+            #text_item.setTextWidth(self.box_width)
             text_item.setPos(x + 5, y + 5)
-            self.scene.addItem(text_item)
+            font = QFont("Arial", 10)
+            metrics = QFontMetrics(font)
+            text_width = metrics.horizontalAdvance(label) + 10
+            text_height = metrics.height() + 10
+
+            # Box
+            node_box = QGraphicsRectItem(x, y, text_width+15, text_height)
+            node_box.setBrush(Qt.GlobalColor.lightGray)
+            node_box.setPen(Qt.GlobalColor.black)
 
             # children positions
             child_positions = self.draw_tree(node['children'], depth + 1, x - step / 2, step)
 
+
             # the lines!
             for cx, cy in child_positions:
                 line = QGraphicsLineItem(
-                    x + self.box_width / 2, y + self.box_height,  # bottom of parent
-                    cx + self.box_width / 2, cy  # top of child
+                    x + self.box_width / 2, y + text_height + 2,  # bottom of parent
+                    cx + self.box_width / 2, cy - text_height - 2 # top of child
                 )
+                line.setZValue(0)
                 self.scene.addItem(line)
-
+            self.scene.addItem(node_box)
+            self.scene.addItem(text_item)
+            node_box.setZValue(1)
+            text_item.setZValue(2)
             # position
             positions.append((x, y + self.box_height))
 
