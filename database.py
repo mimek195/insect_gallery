@@ -11,62 +11,29 @@ def check_if_database_exists(database_name):
         return False
 
 
-def create_taxonomic_database(database_name):
+def create_photo_database(database_name):
     base_dir = os.path.dirname(os.path.abspath(__file__))
     database_path = os.path.join(base_dir, 'databases', database_name + '.db')
     taxonomy = sqlite3.connect(database_path)
     cursor = taxonomy.cursor()
     cursor.execute("PRAGMA foreign_keys = ON;")
 
-    # Create ranks table
-    cursor.execute("DROP TABLE IF EXISTS ranks;")
     cursor.execute('''
-    CREATE TABLE IF NOT EXISTS ranks (
-        id INTEGER NOT NULL,
-        name TEXT NOT NULL,
-        super_rank_id INTEGER NOT NULL
-    )
-    ''')
-
-    ranks = [
-        (1, "Species", 0),
-        (2, "Genus", 1),
-        (3, "Tribe", 2),
-        (4, "Subfamily", 3),
-        (5, "Family", 4),
-        (6, "Superfamily", 5),
-        (7, "Suborder", 6),
-        (8, "Order", 7),
-        (9, "Infraclass", 8),
-        (10, "Subclass", 9),
-        (11, "Class", 10),
-        (12, "Phylum", 11)
-    ]
-    cursor.executemany('''
-        INSERT INTO ranks (id, name, super_rank_id) VALUES (?, ?, ?)
-        ''', ranks)
-
-    # Create taxons table
-    cursor.execute('''
-    CREATE TABLE IF NOT EXISTS taxons (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        rank_id INTEGER NOT NULL,
-        name_latin TEXT NOT NULL,
-        name_english TEXT,
-        description TEXT,
-        super_taxon_id INTEGER,
-        FOREIGN KEY(rank_id) REFERENCES ranks(id) ON DELETE CASCADE
-    )
-    ''')
+        CREATE TABLE IF NOT EXISTS taxons (
+            taxon_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            taxon_rank TEXT NOT NULL,
+            taxon_name TEXT NOT NULL,
+            parent_id INTEGER
+        )
+        ''')
 
     # Create photos table
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS photos (
         photo_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        supertaxon_id INTEGER NOT NULL,
-        photo_location TEXT,
-        photo_description TEXT,
-        FOREIGN KEY(supertaxon_id) REFERENCES taxons(id) ON DELETE CASCADE
+        taxon_id INTEGER NOT NULL,
+        description TEXT,
+        FOREIGN KEY(taxon_id) REFERENCES taxons(id) ON DELETE CASCADE
     )
     ''')
 
@@ -74,10 +41,10 @@ def create_taxonomic_database(database_name):
     taxonomy.close()
 
 
+
 def load_database(database_name):
     database = sqlite3.connect(database_name)
     cursor = database.cursor()
-
 
 def load_default(database_name):
     base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -86,18 +53,18 @@ def load_default(database_name):
     cursor = taxonomy.cursor()
 
     taxas = [
-        (12, "Arthropoda", "Arthropod", "Insects, crustaceans and such", None),
-        (11, "Insecta", "Insects", "Hexapod invertebrates", 1),
-        (8, "Hempitera", "True Bugs", "Bug", 2),
-        (6, "Heteroptera", "Typical Bugs", "Different wings!", 3),
-        (5, "Pyrrhocoridae", "Red Bugs", "They are red", 4),
-        (2, "Pyrrhocoris", "Cotton Stainers", "Yup, red", 5),
-        (1, "Pyrrhocoris apterus", "Firebug", "Red!", 6),
-        (11, "Crustacea", "Crustaceans", "Crab", 1)
+        (1, "Arthropoda", "phylum", None),
+        (2, "Insecta", "class", 1),
+        (3, "Hempitera", "order", 2),
+        (4, "Heteroptera", "suborder", 3),
+        (5, "Pyrrhocoridae", "family", 4),
+        (6, "Pyrrhocoris", "genus", 5),
+        (7, "Pyrrhocoris apterus", "species", 6),
+        (8, "Crustacea", "class", 1)
     ]
 
     cursor.executemany('''
-    INSERT INTO taxons (rank_id, name_latin, name_english, description, super_taxon_id) VALUES (?, ?, ?, ?, ?)
+    INSERT INTO taxons (taxon_id, taxon_name, taxon_rank, parent_id) VALUES (?, ?, ?, ?)
     ''', taxas)
 
     taxonomy.commit()

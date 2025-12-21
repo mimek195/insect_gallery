@@ -10,28 +10,26 @@ from PyQt6.QtCore import Qt
 def build_taxon_tree(cursor, parent_id=None):
     if parent_id is None:
         cursor.execute("""
-                       SELECT t.id, t.name_latin, r.name
+                       SELECT t.taxon_id, t.taxon_name, t.taxon_rank
                        FROM taxons t
-                                JOIN ranks r ON t.rank_id = r.id
-                       WHERE t.super_taxon_id IS NULL
+                       WHERE t.parent_id IS NULL
                        """)
     else:
         cursor.execute("""
-                       SELECT t.id, t.name_latin, r.name
+                       SELECT t.taxon_id, t.taxon_name, t.taxon_rank
                        FROM taxons t
-                                JOIN ranks r ON t.rank_id = r.id
-                       WHERE t.super_taxon_id = ?
+                       WHERE t.parent_id = ?
                        """, (parent_id,))
-
     nodes = []
-    for taxon_id, latin_name, rank_name in cursor.fetchall():
+    for taxon_id, taxon_name, taxon_rank in cursor.fetchall():
         node = {
             "id": taxon_id,
-            "name": latin_name,
-            "rank": rank_name,
+            "taxon_name": taxon_name,
+            "taxon_rank": taxon_rank,
             "children": build_taxon_tree(cursor, taxon_id)
         }
         nodes.append(node)
+    print("build_taxon_tree")
     return nodes
 
 
@@ -66,7 +64,7 @@ class PhylogeneticTree(QMainWindow):
 
 
             # Text
-            label = f"{node['rank']}: {node['name']}"
+            label = f"{node['taxon_rank']}: {node['taxon_name']}"
             text_item = QGraphicsTextItem(label)
             text_item.setDefaultTextColor(Qt.GlobalColor.black)
             #text_item.setTextWidth(self.box_width)
@@ -108,7 +106,6 @@ def generate_phylogenetic_tree(database_path):
     cursor.execute("PRAGMA foreign_keys = ON;")
     tree_data = build_taxon_tree(cursor)
     taxonomy.close()
-
-    window = PhylogeneticTree(tree_data)
+    window = PhylogeneticTree(tree_data) # errors
     return window
 
