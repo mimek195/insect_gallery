@@ -6,31 +6,68 @@ from PyQt6.QtWidgets import (
     QGraphicsTextItem, QGraphicsRectItem, QGraphicsLineItem
 )
 from PyQt6.QtCore import Qt
+def get_entries_with_photos(cursor):
+    cursor.execute("SELECT DISTINCT taxon_id FROM photos")
+    rows = cursor.fetchall()
+    entries_with_photos = set()
+    for row in rows:
+        taxon_id = row[0]
+        entries_with_photos.add(taxon_id)
+    return entries_with_photos
 
-def build_taxon_tree(cursor, parent_id=None):
-    if parent_id is None:
-        cursor.execute("""
-                       SELECT t.taxon_id, t.taxon_name, t.taxon_rank
-                       FROM taxons t
-                       WHERE t.parent_id IS NULL
-                       """)
-    else:
-        cursor.execute("""
-                       SELECT t.taxon_id, t.taxon_name, t.taxon_rank
-                       FROM taxons t
-                       WHERE t.parent_id = ?
-                       """, (parent_id,))
-    nodes = []
-    for taxon_id, taxon_name, taxon_rank in cursor.fetchall():
-        node = {
-            "id": taxon_id,
-            "taxon_name": taxon_name,
-            "taxon_rank": taxon_rank,
-            "children": build_taxon_tree(cursor, taxon_id)
-        }
-        nodes.append(node)
-    print("build_taxon_tree")
-    return nodes
+def get_entry_ancestors(cursor, photo_taxonomy):
+    taxonomy_ids = set(photo_taxonomy)
+    taxonomy_stack = list(photo_taxonomy)
+
+    while taxonomy_stack:
+        taxon_id = taxonomy_stack.pop()
+        cursor.execute(
+            "SELECT parent_id FROM taxons WHERE taxon_id = ?",
+            (taxon_id,)
+        )
+        row = cursor.fetchone()
+        if row[0] not in taxonomy_ids:
+            parent_id = row[0]
+            if parent_id != '':
+                taxonomy_ids.add(parent_id)
+                taxonomy_stack.append(parent_id)
+
+    return taxonomy_ids
+
+
+def build_taxon_tree(taxonomy_cursor, taxonomy_to_render):
+
+    if not taxonomy_to_render:
+        return []
+
+    placeholder_for_taxonomy = ','.join('?' for _ in taxonomy_to_render)
+    taxonomy_cursor.execute(f'''SELECT taxon_id, taxon_name, taxon_rank, parent_id
+                                FROM taxons
+                                WHERE taxon_id IN ({placeholder_for_taxonomy})
+    ''', tuple(taxonomy_to_render))
+
+    taxonomy_rows = taxonomy_cursor.fetchall()
+    nodes_id = {}
+    children = {}
+
+    for taxon_id, taxon_name, taxon_rank, parent_id in taxonomy_rows:
+            nodes_id[taxon_id] = {
+                "id": taxon_id,
+                "taxon_name": taxon_name,
+                "taxon_rank": taxon_rank,
+                "children": []
+            }
+            if parent_id in taxonomy_to_render:
+                children.setdefault(parent_id, []).append(taxon_id)
+    for parent_id, child_ids in children.items():
+        for child_id in child_ids:
+            nodes_id[parent_id]["children"].append(nodes_id[child_id])
+
+    roots = [
+        node for taxon_id, node in nodes_id.items()
+        if next((r[3] for r in taxonomy_rows if r[0] == taxon_id), None) not in taxonomy_to_render
+    ]
+    return roots
 
 
 class PhylogeneticTree(QMainWindow):
@@ -48,7 +85,6 @@ class PhylogeneticTree(QMainWindow):
         self.box_height = 60
         self.h_spacing = 40
 
-        # start from arthropoda
         self.draw_tree(tree_data, 0, 0, 1000)
 
     def draw_tree(self, nodes, depth, x_start, x_width):
@@ -56,12 +92,14 @@ class PhylogeneticTree(QMainWindow):
             return []
 
         positions = []
-        step = x_width / (len(nodes) + 1)
+        step = x_width / max(len(nodes), 1)
 
         for i, node in enumerate(nodes):
+
+            child_positions = self.draw_tree(node['children'], depth + 1, x_start + i*step, step)
+
             x = x_start + (i + 1) * step
             y = depth * self.level_height
-
 
             # Text
             label = f"{node['taxon_rank']}: {node['taxon_name']}"
@@ -78,10 +116,6 @@ class PhylogeneticTree(QMainWindow):
             node_box = QGraphicsRectItem(x, y, text_width+15, text_height)
             node_box.setBrush(Qt.GlobalColor.lightGray)
             node_box.setPen(Qt.GlobalColor.black)
-
-            # children positions
-            child_positions = self.draw_tree(node['children'], depth + 1, x - step / 2, step)
-
 
             # the lines!
             for cx, cy in child_positions:
@@ -100,12 +134,24 @@ class PhylogeneticTree(QMainWindow):
 
         return positions
 
-def generate_phylogenetic_tree(database_path):
-    taxonomy = sqlite3.connect(database_path)
-    cursor = taxonomy.cursor()
-    cursor.execute("PRAGMA foreign_keys = ON;")
-    tree_data = build_taxon_tree(cursor)
-    taxonomy.close()
+def generate_phylogenetic_tree(photo_database_path, taxonomy_database_path):
+    taxonomy_connect = sqlite3.connect(taxonomy_database_path)
+    photos_connect = sqlite3.connect(photo_database_path)
+
+    taxonomy_cursor = taxonomy_connect.cursor()
+    photos_cursor = photos_connect.cursor()
+
+    taxonomy_cursor.execute("PRAGMA foreign_keys = ON;")
+    photos_cursor.execute("PRAGMA foreign_keys = ON;")
+
+    entries_with_photos = get_entries_with_photos(photos_cursor)
+    taxonomy_to_render = get_entry_ancestors(taxonomy_cursor, entries_with_photos)
+
+    tree_data = build_taxon_tree(taxonomy_cursor, taxonomy_to_render)
+
+    taxonomy_cursor.close()
+    photos_cursor.close()
+
     window = PhylogeneticTree(tree_data) # errors
     return window
 

@@ -108,12 +108,13 @@ class MainWindow(QMainWindow):
 
     def view_database(self):
         try:
-            self.database_path = os.path.join(self.base_dir, 'databases', self.line_edit.text() + '.db')
+            self.photo_database_path = os.path.join(self.base_dir, 'databases', self.line_edit.text() + '.db')
+            self.taxonomic_database_path = os.path.join(self.base_dir, 'full_taxonomy.db')
             self.line_edit.clear()
-            if db.check_if_database_exists(self.database_path):
+            if db.check_if_database_exists(self.photo_database_path):
                 if self.error_message.isVisible():
                     self.error_message.setVisible(False)
-                self.tree_window = tree.generate_phylogenetic_tree(self.database_path)
+                self.tree_window = tree.generate_phylogenetic_tree(self.photo_database_path, self.taxonomic_database_path)
                 self.tree_window.show()
             else:
                 self.error_message.setVisible(True)
