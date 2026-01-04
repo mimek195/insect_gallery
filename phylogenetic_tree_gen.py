@@ -2,10 +2,13 @@ import sqlite3
 
 from PyQt6.QtGui import QFontMetrics, QFont
 from PyQt6.QtWidgets import (
-    QMainWindow, QGraphicsView, QGraphicsScene,
-    QGraphicsTextItem, QGraphicsRectItem, QGraphicsLineItem
+    QMainWindow, QGraphicsView, QGraphicsScene,QGraphicsLineItem,
+    QGraphicsTextItem, QGraphicsRectItem
 )
 from PyQt6.QtCore import Qt
+import gui
+
+
 def get_entries_with_photos(cursor):
     cursor.execute("SELECT DISTINCT taxon_id FROM photos")
     rows = cursor.fetchall()
@@ -34,8 +37,7 @@ def get_entry_ancestors(cursor, photo_taxonomy):
 
     return taxonomy_ids
 
-
-def build_taxon_tree(taxonomy_cursor, taxonomy_to_render):
+def build_taxon_tree(taxonomy_cursor, taxonomy_to_render, entries_with_photos):
 
     if not taxonomy_to_render:
         return []
@@ -44,7 +46,7 @@ def build_taxon_tree(taxonomy_cursor, taxonomy_to_render):
     taxonomy_cursor.execute(f'''SELECT taxon_id, taxon_name, taxon_rank, parent_id
                                 FROM taxons
                                 WHERE taxon_id IN ({placeholder_for_taxonomy})
-    ''', tuple(taxonomy_to_render))
+                             ''', tuple(taxonomy_to_render))
 
     taxonomy_rows = taxonomy_cursor.fetchall()
     nodes_id = {}
@@ -55,6 +57,7 @@ def build_taxon_tree(taxonomy_cursor, taxonomy_to_render):
                 "id": taxon_id,
                 "taxon_name": taxon_name,
                 "taxon_rank": taxon_rank,
+                "has_photos": taxon_id in entries_with_photos,
                 "children": []
             }
             if parent_id in taxonomy_to_render:
@@ -69,70 +72,112 @@ def build_taxon_tree(taxonomy_cursor, taxonomy_to_render):
     ]
     return roots
 
+class InteractableQGraphicsRectItem(QGraphicsRectItem):
+    def __init__(self, taxon_id, taxon_name, photo_database_path, x, y, text_width, text_height):
+        super().__init__(x, y, text_width, text_height)
+        self.taxon_name = taxon_name
+        self.taxon_id = taxon_id
+        self.photo_database_path = photo_database_path
+        self.setAcceptHoverEvents(True)
+        self.setCursor(Qt.CursorShape.PointingHandCursor)
+
+    def mousePressEvent(self, event):
+        self.album_window = gui.ImageGridWindow(self.taxon_id, self.taxon_name, self.photo_database_path)
+        self.album_window.show()
+        super().mousePressEvent(event)
 
 class PhylogeneticTree(QMainWindow):
-    def __init__(self, tree_data):
+    def __init__(self, tree_data, photo_database_path):
         super().__init__()
         self.setWindowTitle("Phylogenetic Tree")
         self.resize(1200, 800)
+
+        self.photo_database_path = photo_database_path
 
         self.scene = QGraphicsScene()
         self.view = QGraphicsView(self.scene)
         self.setCentralWidget(self.view)
 
-        self.level_height = 100
-        self.box_width = 100
-        self.box_height = 60
-        self.h_spacing = 40
+        self.phylogenetic_tree_entry_height_spacing = 75
+        self.entry_box_width = 100
+        self.entry_box_height = 60
+        self.phylogenetic_tree_width_spacing = 50
 
-        self.draw_tree(tree_data, 0, 0, 1000)
+        self.draw_tree(tree_data, 0, self.phylogenetic_tree_width_spacing)
 
-    def draw_tree(self, nodes, depth, x_start, x_width):
+    def draw_tree(self, nodes, depth, x_start=0):
         if not nodes:
             return []
 
         positions = []
-        step = x_width / max(len(nodes), 1)
+        x = x_start
 
-        for i, node in enumerate(nodes):
+        for node in nodes:
+            child_positions = self.draw_tree(node['children'], depth + 1, x)
 
-            child_positions = self.draw_tree(node['children'], depth + 1, x_start + i*step, step)
+            # Calculate width
+            if child_positions:
+                subtree_left = min(cx for cx, _ in child_positions)
+                subtree_right = max(cx for cx, _ in child_positions)
+                x_center = (subtree_left + subtree_right) / 2
+            else:
+                label = f"{node['taxon_rank']}: {node['taxon_name']}"
+                font = QFont("Arial", 10)
+                metrics = QFontMetrics(font)
+                text_width = metrics.horizontalAdvance(label) + 10
+                x_center = x + text_width / 2
 
-            x = x_start + (i + 1) * step
-            y = depth * self.level_height
-
-            # Text
-            label = f"{node['taxon_rank']}: {node['taxon_name']}"
-            text_item = QGraphicsTextItem(label)
-            text_item.setDefaultTextColor(Qt.GlobalColor.black)
-            #text_item.setTextWidth(self.box_width)
-            text_item.setPos(x + 5, y + 5)
-            font = QFont("Arial", 10)
-            metrics = QFontMetrics(font)
-            text_width = metrics.horizontalAdvance(label) + 10
-            text_height = metrics.height() + 10
+            y = depth * self.phylogenetic_tree_entry_height_spacing
 
             # Box
-            node_box = QGraphicsRectItem(x, y, text_width+15, text_height)
-            node_box.setBrush(Qt.GlobalColor.lightGray)
+            label = f"{node['taxon_rank']}: {node['taxon_name']}"
+            font = QFont("Arial", 10)
+            metrics = QFontMetrics(font)
+            text_width = metrics.horizontalAdvance(label) + 20
+            text_height = metrics.height() + 10
+
+            if node['has_photos']:
+                node_box = InteractableQGraphicsRectItem(
+                    node['id'], node['taxon_name'], self.photo_database_path,
+                    x_center - text_width / 2, y, text_width, text_height
+                )
+                node_box.setBrush(Qt.GlobalColor.red)
+            else:
+                node_box = QGraphicsRectItem(
+                    x_center - text_width / 2, y, text_width, text_height
+                )
+                node_box.setBrush(Qt.GlobalColor.lightGray)
             node_box.setPen(Qt.GlobalColor.black)
+            self.scene.addItem(node_box)
+            node_box.setZValue(1)
+
+            # Text
+            text_item = QGraphicsTextItem(label)
+            text_item.setFont(font)
+            text_item.setDefaultTextColor(Qt.GlobalColor.black)
+            text_item.setPos(x_center - text_width / 2 + 5, y + 5)
+            self.scene.addItem(text_item)
+            text_item.setZValue(2)
 
             # the lines!
             for cx, cy in child_positions:
                 line = QGraphicsLineItem(
-                    x + self.box_width / 2, y + text_height + 2,  # bottom of parent
-                    cx + self.box_width / 2, cy - text_height - 2 # top of child
+                    x_center, y + text_height,  # bottom of parent
+                    cx, cy  # top of child
                 )
                 line.setZValue(0)
                 self.scene.addItem(line)
-            self.scene.addItem(node_box)
-            self.scene.addItem(text_item)
-            node_box.setZValue(1)
-            text_item.setZValue(2)
-            # position
-            positions.append((x, y + self.box_height))
+
+            if child_positions:
+                x = max(cx + text_width / 2 + self.phylogenetic_tree_width_spacing for cx, _ in child_positions)
+                self.phylogenetic_tree_width_spacing += 10
+            else:
+                x += text_width + self.phylogenetic_tree_width_spacing
+
+            positions.append((x_center, y + text_height))
 
         return positions
+
 
 def generate_phylogenetic_tree(photo_database_path, taxonomy_database_path):
     taxonomy_connect = sqlite3.connect(taxonomy_database_path)
@@ -147,11 +192,10 @@ def generate_phylogenetic_tree(photo_database_path, taxonomy_database_path):
     entries_with_photos = get_entries_with_photos(photos_cursor)
     taxonomy_to_render = get_entry_ancestors(taxonomy_cursor, entries_with_photos)
 
-    tree_data = build_taxon_tree(taxonomy_cursor, taxonomy_to_render)
+    tree_data = build_taxon_tree(taxonomy_cursor, taxonomy_to_render, entries_with_photos)
 
     taxonomy_cursor.close()
     photos_cursor.close()
 
-    window = PhylogeneticTree(tree_data) # errors
-    return window
-
+    tree_window = PhylogeneticTree(tree_data, photo_database_path) # errors
+    return tree_window

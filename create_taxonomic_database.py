@@ -45,7 +45,7 @@ for line in lines:
     taxon_name = taxon_name.strip()
 
     # Skipping unnecessary or rarely used ranks.
-    ignored_ranks = ["no rank", "strain", "isolate", "forma specialis", ]
+    ignored_ranks = ["no rank", "strain", "isolate", "forma specialis"]
     if any(ignored_rank in taxon_rank for ignored_rank in ignored_ranks):
         continue
 
