@@ -60,30 +60,3 @@ def upload_image(database_name, taxon_id, button=None):
     connection.close()
 
 
-def load_default(database_name):
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-    database_path = os.path.join(base_dir, 'databases', database_name + '.db')
-    taxonomy = sqlite3.connect(database_path)
-    cursor = taxonomy.cursor()
-
-    photos = [
-        (36998, "red"),
-        (7459, "apis"),
-        (6661, "species"),
-        (6715, "wawa"),
-        (1256090, "wewe")
-
-    ]
-
-    cursor.executemany('''
-    INSERT INTO photos (taxon_id, filepath) VALUES (?, ?)
-    ''', photos)
-
-    taxonomy.commit()
-    taxonomy.close()
-
-
-def nuke_database(database_name):
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-    database_path = os.path.join(base_dir, 'databases', database_name + '.db')
-    os.remove(database_path)
