@@ -2,7 +2,6 @@ import re
 import sqlite3
 import os
 input_file = "arthropoda_ids.txt"
-output_file = "taxonomy.txt"
 
 lines = [line.rstrip("\n") for line in open(input_file)]
 
@@ -13,7 +12,7 @@ filter_output = []
 no_rank_regex = re.compile(r'^(\d+)\s+\[([^\]]+)\]\s+(.+)$')
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
-database_path = os.path.join(base_dir, 'databases', 'full_taxonomy.db')
+database_path = os.path.join(base_dir, 'taxonomy.db')
 taxonomy = sqlite3.connect(database_path)
 cursor = taxonomy.cursor()
 cursor.execute("PRAGMA foreign_keys = ON;")
@@ -77,10 +76,6 @@ for line in lines:
 
 taxonomy.commit()
 taxonomy.close()
-# Write output
-with open(output_file, "w") as f:
-    for row in filter_output:
-        f.write("\t".join(row) + "\n")
 
 
 

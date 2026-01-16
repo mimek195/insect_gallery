@@ -4,14 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="300a37ba-6d02-49ad-ab30-a6c61eb97342" name="Changes" comment="hardcoded taxonomy">
+    <list default="true" id="300a37ba-6d02-49ad-ab30-a6c61eb97342" name="Changes" comment="removed &quot;nuke database&quot; function">
+      <change beforePath="$PROJECT_DIR$/.idea/insect_gallery.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/insect_gallery.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/create_taxonomic_database.py" beforeDir="false" afterPath="$PROJECT_DIR$/create_taxonomic_database.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/database.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/databases/photos.db" beforeDir="false" afterPath="$PROJECT_DIR$/databases/photos.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/databases/photos.db" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/phylogenetic_tree_gen.py" beforeDir="false" afterPath="$PROJECT_DIR$/phylogenetic_tree_gen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,6 +52,7 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;Python.create_taxonomic_database.executor&quot;: &quot;Run&quot;,
     &quot;Python.database.executor&quot;: &quot;Run&quot;,
     &quot;Python.gui.executor&quot;: &quot;Run&quot;,
     &quot;Python.main.executor&quot;: &quot;Run&quot;,
@@ -443,7 +443,23 @@
       <option name="project" value="LOCAL" />
       <updated>1767434625101</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="first functional version">
+      <option name="closed" value="true" />
+      <created>1767563887189</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1767563887189</updated>
+    </task>
+    <task id="LOCAL-00025" summary="removed &quot;nuke database&quot; function">
+      <option name="closed" value="true" />
+      <created>1767712292007</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1767712292007</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -480,7 +496,9 @@
     <MESSAGE value="Added taxonomic data filter" />
     <MESSAGE value="database format update" />
     <MESSAGE value="hardcoded taxonomy" />
-    <option name="LAST_COMMIT_MESSAGE" value="hardcoded taxonomy" />
+    <MESSAGE value="first functional version" />
+    <MESSAGE value="removed &quot;nuke database&quot; function" />
+    <option name="LAST_COMMIT_MESSAGE" value="removed &quot;nuke database&quot; function" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/insect_gallery$phylogenetic_tree_gen.coverage" NAME="phylogenetic_tree_gen Coverage Results" MODIFIED="1761649230669" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

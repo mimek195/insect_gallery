@@ -11,6 +11,7 @@ import database as db
 import phylogenetic_tree_gen as tree
 
 class MainWindow(QMainWindow):
+
     def __init__(self):
         super().__init__()
 
@@ -26,7 +27,7 @@ class MainWindow(QMainWindow):
         self.photo_database_name = None
 
         self.base_dir = os.path.dirname(os.path.abspath(__file__))
-        self.taxonomic_database_path = os.path.join(self.base_dir, 'full_taxonomy.db')
+        self.taxonomic_database_path = os.path.join(self.base_dir, 'taxonomy.db')
 
         taxonomy = sqlite3.connect(self.taxonomic_database_path)
         taxonomy_cursor = taxonomy.cursor()
@@ -60,7 +61,7 @@ class MainWindow(QMainWindow):
         # Display Title
         main_menu_title = QLabel("Arthropod Gallery")
         main_menu_title.setFont(QFont("Arial", 40))
-        main_menu_title.setStyleSheet("color: black;")
+        main_menu_title.setStyleSheet("color: red;")
         main_menu_title.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         # Display Image
@@ -176,6 +177,9 @@ class MainWindow(QMainWindow):
             self.database_load_message.setStyleSheet("color: red;")
             self.database_load_message.setVisible(True)
         else:
+            self.database_load_message.setText("Taxon found")
+            self.database_load_message.setStyleSheet("color: green;")
+            self.database_load_message.setVisible(True)
             taxon_name = self.add_photo_line_edit.text()
             taxon_id = self.taxon_name_to_id.get(taxon_name)
             db.upload_image(self.photo_database_name, taxon_id, self.add_photo_line_edit)
