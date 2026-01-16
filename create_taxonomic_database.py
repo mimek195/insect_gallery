@@ -8,8 +8,8 @@ lines = [line.rstrip("\n") for line in open(input_file)]
 parent_id_list = []  # tracks parent IDs per indentation level
 filter_output = []
 
-# looking up [no rank] using regex
-no_rank_regex = re.compile(r'^(\d+)\s+\[([^\]]+)\]\s+(.+)$')
+# regex formula that finds and captures the id, taxon rank, and taxon name
+taxon_regex = re.compile(r'^(\d+)\s+\[([^\]]+)\]\s+(.+)$')
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
 database_path = os.path.join(base_dir, 'taxonomy.db')
@@ -35,7 +35,7 @@ for line in lines:
     # Detects indentations
     indentation_level = len(line) - len(stripped)
 
-    regex_match = no_rank_regex.match(stripped)
+    regex_match = taxon_regex.match(stripped)
     if not regex_match:
         continue
 
