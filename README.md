@@ -1,7 +1,7 @@
 # Dependencies
-Python: 3.14
+Python: >=3.14
 
-PyQt6: 6.10.2
+PyQt6: >=6.10.2
 
 ## Launch the application with python:
 
