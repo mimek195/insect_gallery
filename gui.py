@@ -194,6 +194,20 @@ class MainWindow(QMainWindow):
             db.create_photo_database(self.database_name_line_edit.text())
             self.load_database()
 
+class ImageLabel(QLabel):
+    def __init__(self, pixmap: QPixmap):
+        super().__init__()
+        self.original_pixmap = pixmap
+
+        self.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+
+    def resizeEvent(self, event):
+        if not self.original_pixmap.isNull():
+            self.setPixmap(self.original_pixmap.scaled(self.size(), Qt.AspectRatioMode.KeepAspectRatio,
+                                            Qt.TransformationMode.SmoothTransformation))
+        super().resizeEvent(event)
+
 class ImageGridWindow(QWidget):
     def __init__(self, taxon_id, taxon_name, photo_database_path):
         super().__init__()
@@ -211,8 +225,7 @@ class ImageGridWindow(QWidget):
         photo_cursor = photo_connection.cursor()
 
         self.photo_path_list = [row[0] for row in photo_cursor.execute(
-            'SELECT filepath FROM photos WHERE taxon_id = ?', (self.taxon_id,)
-        ).fetchall()]
+            'SELECT filepath FROM photos WHERE taxon_id = ?', (self.taxon_id,)).fetchall()]
         photo_connection.close()
 
         image_columns = 3
@@ -221,8 +234,7 @@ class ImageGridWindow(QWidget):
             image_column = index % image_columns
 
             pixmap = QPixmap(photo_path)
-            label = QLabel()
-            label.setPixmap(pixmap)
+            label = ImageLabel(pixmap)
             self.grid_layout.addWidget(label, image_row, image_column)
 
 
