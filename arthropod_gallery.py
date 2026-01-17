@@ -20,6 +20,9 @@ def check_if_database_exists(database_name):
 def create_photo_database(database_name):
     base_dir = os.path.dirname(os.path.abspath(__file__))
     database_path = os.path.join(base_dir, 'databases', database_name + '.db')
+    database_folder_path = os.path.join(base_dir, 'databases')
+    os.makedirs(database_folder_path, exist_ok=True)
+
     taxonomy = sqlite3.connect(database_path)
     cursor = taxonomy.cursor()
     cursor.execute("PRAGMA foreign_keys = ON;")
