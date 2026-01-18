@@ -441,7 +441,7 @@ class PhylogeneticTree(QMainWindow):
             text_item = QGraphicsTextItem(label)
             text_item.setFont(font)
             text_item.setDefaultTextColor(Qt.GlobalColor.black)
-            text_item.setPos(x_center - text_width / 2 + 5, y + 5)
+            text_item.setPos(x_center - text_width / 2 + 5, y)
             self.scene.addItem(text_item)
             text_item.setZValue(2)
 
