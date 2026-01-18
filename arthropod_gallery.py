@@ -381,6 +381,7 @@ class PhylogeneticTree(QMainWindow):
 
         self.scene = QGraphicsScene()
         self.view = QGraphicsView(self.scene)
+        self.view.scale(0.85,0.85)
         self.setCentralWidget(self.view)
 
         self.phylogenetic_tree_entry_height_spacing = 75
