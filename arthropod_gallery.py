@@ -8,6 +8,7 @@ from PyQt6.QtGui import QIcon, QFont, QPixmap, QFontMetrics
 from PyQt6.QtCore import Qt
 import sqlite3
 import shutil
+
 def check_if_database_exists(database_name):
     base_dir = os.path.dirname(__file__)
     file_path = os.path.join(base_dir, database_name)
